@@ -1,13 +1,14 @@
 # 🛡️ Data Validator & Anomaly API
 
 ![CI Pipeline](https://github.com/JosePacheco-dev/data-validator-api/actions/workflows/ci.yml/badge.svg)
-![Python Version](https://img.shields.io/badge/python-3.12-blue.svg)
+![Python Version](https://img.shields.io/badge/python-3.14-blue.svg)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-009688.svg)
 ![Pydantic](https://img.shields.io/badge/Pydantic-v2-e91e63.svg)
+![Docker](https://img.shields.io/badge/Docker-Supported-2496ED.svg)
 
 Una API RESTful de grado de producción diseñada para la validación estricta de contratos de datos y la detección de anomalías en lecturas de sensores de equipos industriales.
 
-El proyecto implementa una **Arquitectura en 3 Capas** (*Transport*, *Domain*, *Contracts/Schemas*), pruebas automatizadas con `pytest` e **Integración Continua (CI)** mediante GitHub Actions.
+El proyecto implementa una **Arquitectura en 3 Capas** (*Transport*, *Domain*, *Contracts/Schemas*), pruebas automatizadas con `pytest`, empaquetamiento portable con **Docker** e **Integración Continua (CI)** mediante GitHub Actions.
 
 ---
 
@@ -27,8 +28,10 @@ data-validator-api/
 ├── tests/
 │   └── test_main.py        # Suite de pruebas de integración y unitarias
 ├── .gitignore              # Archivos excluidos de control de versiones
+├── Dockerfile              # Configuración de compilación multicapa para Docker (Python 3.14)
+├── docker-compose.yml      # Orquestación de servicios y mapeo de puertos
 ├── requirements.txt        # Dependencias fijadas del proyecto
-└── README.md               # Documentación general
+└── README.md               # Documentación general del proyecto
 ```
 
 ---
@@ -89,11 +92,29 @@ data-validator-api/
 
 ---
 
-## 🚀 Instalación y Ejecución Local
+## 🐳 Ejecución con Docker (Recomendado)
+
+Si dispones de Docker y Docker Compose instalados, puedes iniciar el contenedor de producción con un único comando sin necesidad de configurar un entorno local de Python:
+
+```bash
+docker compose up --build
+```
+
+La API estará inmediatamente disponible en `http://127.0.0.1:8000` y la documentación interactiva Swagger UI en `http://127.0.0.1:8000/docs`.
+
+Para detener los contenedores:
+
+```bash
+docker compose down
+```
+
+---
+
+## 🚀 Instalación y Ejecución Local (Sin Docker)
 
 ### Prerrequisitos
 
-- Python 3.12+
+- Python 3.14+
 
 ### Pasos
 
@@ -148,8 +169,9 @@ pytest
 
 ## 🔄 Integración Continua (CI/CD)
 
-El pipeline de GitHub Actions se ejecuta automáticamente en cada `push` o `pull_request` a la rama `main`. Ejecuta los siguientes pasos sobre un contenedor `ubuntu-latest`:
+El pipeline de GitHub Actions se ejecuta automáticamente en cada `push` o `pull_request` a las ramas principales (`main`, `master`). El flujo de trabajo automatizado realiza los siguientes procesos sobre un entorno `ubuntu-latest`:
 
-1. Configura el entorno de Python 3.12.
-2. Instala las dependencias del `requirements.txt`.
-3. Ejecuta la suite completa de `pytest`.
+1. Configura un entorno aislado con Python 3.14.
+2. Instala las dependencias declaradas en `requirements.txt`.
+3. Ejecuta la suite de pruebas automatizadas mediante `pytest`.
+4. Inicializa Docker Buildx y verifica la construcción limpia de la imagen a partir del `Dockerfile`.
