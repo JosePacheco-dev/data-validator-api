@@ -1,5 +1,5 @@
 # Use the official Python 3.12 slim image
-FROM python:3.12-slim
+FROM python:3.14-slim
 
 # Prevent Python from generating .pyc files and force real-time logging.
 ENV PYTHONDONTWRITEBYTECODE=1
