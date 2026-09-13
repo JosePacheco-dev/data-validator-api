@@ -1,4 +1,4 @@
-# Use the official Python 3.12 slim image
+# Use the official Python 3.14 slim image
 FROM python:3.14-slim
 
 # Prevent Python from generating .pyc files and force real-time logging.

@@ -14,10 +14,10 @@ jobs:
       - name: Descargar el código del repositorio
         uses: actions/checkout@v4
 
-      - name: Configurar entorno de Python 3.12
+      - name: Configurar entorno de Python 3.14
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.14"
 
       - name: Instalar dependencias
         run: |
@@ -27,3 +27,13 @@ jobs:
       - name: Ejecutar suite de pruebas con Pytest
         run: |
           pytest
+      
+      - name: Configurar Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Verificar la construcción de la imagen Docker
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
